@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import Data from './components/Data'
 import Interfaz from './components/Interfaz'
-import { calcPriorizacion, calcRiesgoRetraso, calcAnomalia, calcAsignacion } from './utils/harvest'
+import { calcPriorizacion, calcRiesgoRetraso, calcAsignacion } from './utils/harvest'
 import './App.css'
 
 const INITIAL = {
@@ -15,12 +15,7 @@ const INITIAL = {
   tiempoRestante:      10,
   lluviaPronosticada:  30,
   turnosRestantes:      3,
-  // Sección 3 – Anomalía en Máquina
-  temperaturaMotor:    75,
-  vibracion:            3.2,
-  rpm:               2200,
-  presionHidraulica:  185,
-  // Sección 4 – Asignación de Recursos
+  // Sección 3 – Asignación de Recursos
   numEquipos:           4,
   numOperarios:        12,
   numLotes:             4,
@@ -54,7 +49,6 @@ export default function App() {
   const recommendations = useMemo(() => ({
     priorizacion: calcPriorizacion(data),
     retraso:      calcRiesgoRetraso(data),
-    anomalia:     calcAnomalia(data),
     asignacion:   calcAsignacion(data),
   }), [data])
 

@@ -26,18 +26,6 @@ const SECTIONS = [
       { key: 'turnosRestantes',     label: 'Turnos Restantes',     unit: 'turnos', type: 'number', min: 1,    max: 10,  step: 1   },
     ],
   },
-  {
-    id: 'anomalia',
-    title: 'Anomalía en Máquina',
-    icon: '⚙️',
-    accent: 'orange',
-    fields: [
-      { key: 'temperaturaMotor',    label: 'Temperatura Motor',    unit: '°C',     type: 'number', min: 0,    max: 150, step: 0.5 },
-      { key: 'vibracion',           label: 'Vibración',            unit: 'mm/s',   type: 'number', min: 0,    max: 20,  step: 0.1 },
-      { key: 'rpm',                 label: 'RPM',                  unit: 'RPM',    type: 'number', min: 0,    max: 5000,step: 10  },
-      { key: 'presionHidraulica',   label: 'Presión Hidráulica',   unit: 'bar',    type: 'number', min: 0,    max: 400, step: 1   },
-    ],
-  },
 ]
 
 // ── Componente principal ───────────────────────────────────────────────────────

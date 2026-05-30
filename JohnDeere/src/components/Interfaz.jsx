@@ -19,7 +19,6 @@ export default function Interfaz({ recommendations: r }) {
       <div className="cards-grid">
         <PriorizacionCard data={r.priorizacion} />
         <RetrasoCard      data={r.retraso}      />
-        <AnomaliaCard     data={r.anomalia}     />
         <AsignacionCard   data={r.asignacion}   />
       </div>
     </div>
@@ -117,48 +116,7 @@ function RetrasoCard({ data }) {
   )
 }
 
-// ── Card 3: Anomalía en Máquina ───────────────────────────────────────────────
-const SENSOR_ICON = { normal: '✅', advertencia: '⚠️', critico: '🚨' }
-const SENSOR_COLOR = { normal: '#43a047', advertencia: '#e8a022', critico: '#e53935' }
-
-function AnomaliaCard({ data }) {
-  const c = C[data.colorKey] ?? C.success
-  return (
-    <div className="dash-card" style={{ '--card-accent': c.accent }}>
-      <CardHead icon="⚙️" title="Anomalía en Máquina" sub="Estado de sensores" />
-
-      <div className="card-hero">
-        <span className="hero-value" style={{ color: c.accent }}>{data.estado}</span>
-        <Badge
-          label={data.issues.length === 0 ? 'Todos los sensores OK' : `${data.issues.length} alerta(s)`}
-          colorKey={data.colorKey}
-        />
-      </div>
-
-      <div className="sensor-list">
-        {data.sensores.map(s => (
-          <div key={s.key} className="sensor-row">
-            <span className="sensor-icon">{SENSOR_ICON[s.estado]}</span>
-            <span className="sensor-label">{s.label}</span>
-            <div className="sensor-bar-wrap">
-              <div className="sensor-bar-track">
-                <div
-                  className="sensor-bar-fill"
-                  style={{ width: `${s.pct}%`, background: SENSOR_COLOR[s.estado] }}
-                />
-              </div>
-            </div>
-            <span className="sensor-val" style={{ color: SENSOR_COLOR[s.estado] }}>
-              {s.valor} {s.unit}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ── Card 4: Asignación de Recursos ────────────────────────────────────────────
+// ── Card 3: Asignación de Recursos ────────────────────────────────────────────
 const PRIORIDAD_COLOR = { Alta: 'danger', Media: 'warning', Baja: 'success' }
 
 function AsignacionCard({ data }) {
