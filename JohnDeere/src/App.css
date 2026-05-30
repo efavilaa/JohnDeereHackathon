@@ -1,71 +1,103 @@
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #f5f5f5;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: #eef1f5;
   color: #1a1a1a;
   min-height: 100vh;
 }
 
-/* ── Header ── */
+/* ── App shell ─────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ────────────────────────────────────────── */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 60px;
-  background: #367c2b;
+  padding: 0 1.5rem;
+  height: 56px;
+  background: linear-gradient(135deg, #2a6022 0%, #367c2b 60%, #4a9e3e 100%);
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 20;
 }
 
 .app-brand {
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-/* ── Tab navigation ── */
-.tab-nav {
   display: flex;
-  gap: 0.25rem;
-}
-
-.tab-btn {
-  padding: 0.4rem 1.2rem;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  border: 1.5px solid transparent;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-
-.tab-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-.tab-btn.active {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.5);
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-/* ── Main content ── */
-.app-main {
-  padding: 2rem 1rem;
-  min-height: calc(100vh - 60px);
+.brand-leaf {
+  width: 22px;
+  height: 22px;
+  opacity: 0.9;
 }
+
+.app-realtime {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.realtime-dot {
+  width: 8px;
+  height: 8px;
+  background: #7fff7f;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(127,255,127,0.35);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(127,255,127,0.35); }
+  50%       { box-shadow: 0 0 0 5px rgba(127,255,127,0.15); }
+}
+
+/* ── Body split ────────────────────────────────────── */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left panel – data inputs */
+.panel-left {
+  width: 400px;
+  min-width: 320px;
+  flex-shrink: 0;
+  background: #f8f9fb;
+  border-right: 1px solid #d8dde5;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Right panel – dashboard */
+.panel-right {
+  flex: 1;
+  overflow-y: auto;
+  background: #eef1f5;
+}
+
+/* ── Scrollbar styling ─────────────────────────────── */
+.panel-left::-webkit-scrollbar,
+.panel-right::-webkit-scrollbar { width: 5px; }
+.panel-left::-webkit-scrollbar-track,
+.panel-right::-webkit-scrollbar-track { background: transparent; }
+.panel-left::-webkit-scrollbar-thumb,
+.panel-right::-webkit-scrollbar-thumb { background: #c5cdd8; border-radius: 4px; }
