@@ -69,6 +69,36 @@ body {
   50%       { box-shadow: 0 0 0 5px rgba(127,255,127,0.15); }
 }
 
+/* New styles for navigation tabs */
+.app-nav {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* Pushes the nav to the right */
+}
+
+.app-nav button {
+  background: none;
+  border: none;
+  color: #cfe6c9; /* Light green for inactive tabs */
+  font-weight: 600;
+  font-size: 16px;
+  padding: 8px 18px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.app-nav button:hover:not(.active) {
+  color: #fff; /* White on hover for inactive tabs */
+}
+
+.app-nav button.active {
+  background: #eef1f5; /* Background of the app body */
+  color: #367c2b; /* John Deere green for active tab text */
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1); /* Subtle shadow for active tab */
+}
+
+
 /* ── Body split ────────────────────────────────────── */
 .app-body {
   display: flex;
@@ -94,10 +124,20 @@ body {
   background: #eef1f5;
 }
 
+/* Full panel for Planificacion */
+.panel-full {
+  flex: 1;
+  overflow-y: auto;
+  background: #eef1f5;
+}
+
 /* ── Scrollbar styling ─────────────────────────────── */
 .panel-left::-webkit-scrollbar,
-.panel-right::-webkit-scrollbar { width: 5px; }
+.panel-right::-webkit-scrollbar,
+.panel-full::-webkit-scrollbar { width: 5px; }
 .panel-left::-webkit-scrollbar-track,
-.panel-right::-webkit-scrollbar-track { background: transparent; }
+.panel-right::-webkit-scrollbar-track,
+.panel-full::-webkit-scrollbar-track { background: transparent; }
 .panel-left::-webkit-scrollbar-thumb,
-.panel-right::-webkit-scrollbar-thumb { background: #c5cdd8; border-radius: 4px; }
+.panel-right::-webkit-scrollbar-thumb,
+.panel-full::-webkit-scrollbar-thumb { background: #c5cdd8; border-radius: 4px; }

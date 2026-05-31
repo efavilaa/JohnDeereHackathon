@@ -1,35 +1,46 @@
 import './Data.css'
+import { SPEC } from '../utils/engineHealth'; // Importa SPEC para definir los campos de los sensores
 
 // ── Definición de secciones y campos ──────────────────────────────────────────
 const SECTIONS = [
-  {
-    id: 'priorizacion',
-    title: 'Priorización de Lotes',
-    icon: '🏷️',
-    accent: 'green',
-    fields: [
-      { key: 'humedadSuelo',        label: 'Humedad Suelo',        unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
-      { key: 'pronosticoLluvia',    label: 'Pronóstico Lluvia',    unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
-      { key: 'madurezCultivo',      label: 'Madurez Cultivo',      unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
-      { key: 'distanciaMaquinaria', label: 'Distancia Maquinaria', unit: 'km',     type: 'number', min: 0,    max: 200, step: 0.5 },
-      { key: 'capacidadDisponible', label: 'Capacidad Disponible', unit: 'ha/día', type: 'number', min: 0,    max: 500, step: 1   },
-    ],
-  },
   {
     id: 'retraso',
     title: 'Riesgo de Retraso',
     icon: '⏱️',
     accent: 'blue',
     fields: [
-      { key: 'tiempoRestante',      label: 'Tiempo Restante',      unit: 'días',   type: 'number', min: 1,    max: 90,  step: 1   },
-      { key: 'lluviaPronosticada',  label: 'Lluvia Pronosticada',  unit: 'mm',     type: 'number', min: 0,    max: 300, step: 1   },
-      { key: 'turnosRestantes',     label: 'Turnos Restantes',     unit: 'turnos', type: 'number', min: 1,    max: 10,  step: 1   },
+      { key: 'tiempoRestanteEstimado', label: 'Tiempo Restante Estimado', unit: 'h',      type: 'number', min: 0,    max: 200, step: 0.1 },
+      { key: 'horasDisponiblesTurno',  label: 'Horas Disponibles Turno',  unit: 'h',      type: 'number', min: 0,    max: 24,  step: 0.5 },
+      { key: 'probabilidadLluvia',     label: 'Probabilidad Lluvia',      unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
+      { key: 'operadoresDisponibles',  label: 'Operadores Disponibles',   unit: '',       type: 'number', min: 0,    max: 10,  step: 1   },
+      { key: 'maquinariaDisponible',   label: 'Maquinaria Disponible',    unit: '',       type: 'number', min: 0,    max: 10,  step: 1   },
     ],
   },
 ]
 
+// Campos comunes para la priorización de lotes
+const PRIORIZACION_FIELDS = [
+  { key: 'humedadSuelo',        label: 'Humedad Suelo',        unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
+  { key: 'pronosticoLluvia',    label: 'Pronóstico Lluvia',    unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
+  { key: 'madurezCultivo',      label: 'Madurez Cultivo',      unit: '%',      type: 'range',  min: 0,    max: 100, step: 1   },
+  { key: 'distanciaMaquinaria', label: 'Distancia Maquinaria', unit: 'km',     type: 'number', min: 0,    max: 200, step: 0.5 },
+  { key: 'capacidadDisponible', label: 'Capacidad Disponible', unit: 'ha/día', type: 'number', min: 0,    max: 500, step: 1   },
+];
+
+// Campos para los sensores de los tractores
+const SENSOR_FIELDS = Object.keys(SPEC).map(key => ({
+  key: key,
+  label: SPEC[key].name,
+  unit: SPEC[key].unit,
+  type: 'number', // Asumimos que todos los sensores son de tipo number para la entrada
+  min: 0, // Valores mínimos y máximos genéricos, se pueden ajustar si es necesario
+  max: 5000,
+  step: 0.1,
+}));
+
+
 // ── Componente principal ───────────────────────────────────────────────────────
-export default function Data({ data, onChange, onTiempoChange, onNumLotesChange }) {
+export default function Data({ data, onChange }) { // Eliminamos onTiempoChange y onNumLotesChange
   return (
     <div className="data-panel">
       <div className="data-panel-header">
@@ -38,6 +49,43 @@ export default function Data({ data, onChange, onTiempoChange, onNumLotesChange 
       </div>
 
       <div className="sections-list">
+        {/* Sección 1 — Priorización de Lote A */}
+        <section className={`data-section accent-green`}>
+          <h3 className="section-title">
+            <span className="section-icon">🏷️</span>
+            Priorización de Lote A
+          </h3>
+          <div className="fields-list">
+            {PRIORIZACION_FIELDS.map(field => (
+              <FieldInput
+                key={`loteA-${field.key}`}
+                field={field}
+                value={data.loteA[field.key]}
+                onChange={v => onChange(field.key, v, 'loteA')}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Sección 1 — Priorización de Lote B */}
+        <section className={`data-section accent-green`}>
+          <h3 className="section-title">
+            <span className="section-icon">🏷️</span>
+            Priorización de Lote B
+          </h3>
+          <div className="fields-list">
+            {PRIORIZACION_FIELDS.map(field => (
+              <FieldInput
+                key={`loteB-${field.key}`}
+                field={field}
+                value={data.loteB[field.key]}
+                onChange={v => onChange(field.key, v, 'loteB')}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Sección 2 — Riesgo de Retraso */}
         {SECTIONS.map(section => (
           <section key={section.id} className={`data-section accent-${section.accent}`}>
             <h3 className="section-title">
@@ -57,49 +105,51 @@ export default function Data({ data, onChange, onTiempoChange, onNumLotesChange 
           </section>
         ))}
 
-        {/* Sección 4 — Asignación de Recursos (dinámica) */}
-        <section className="data-section accent-purple">
+        {/* Nueva Sección: Predicción de Servicio - Tractor 1 */}
+        <section className={`data-section accent-orange`}>
           <h3 className="section-title">
-            <span className="section-icon">👥</span>
-            Asignación de Recursos
+            <span className="section-icon">🚜</span>
+            Sensores Tractor 1
           </h3>
           <div className="fields-list">
+            {/* Campo para el modelo del tractor */}
             <FieldInput
-              field={{ key: 'numEquipos',   label: 'Equipos',         unit: 'unidades', type: 'number', min: 1, max: 50,  step: 1 }}
-              value={data.numEquipos}
-              onChange={v => onChange('numEquipos', v)}
+              field={{ key: 'model', label: 'Modelo', unit: '', type: 'text' }}
+              value={data.tractor1.model}
+              onChange={v => onChange('model', v, 'tractor1')}
             />
-            <FieldInput
-              field={{ key: 'numOperarios', label: 'Operarios',       unit: 'personas', type: 'number', min: 1, max: 200, step: 1 }}
-              value={data.numOperarios}
-              onChange={v => onChange('numOperarios', v)}
-            />
-            <FieldInput
-              field={{ key: 'numLotes',     label: 'Número de Lotes', unit: 'lotes',    type: 'number', min: 1, max: 20,  step: 1 }}
-              value={data.numLotes}
-              onChange={v => onNumLotesChange(v)}
-            />
+            {SENSOR_FIELDS.map(field => (
+              <FieldInput
+                key={`tractor1-${field.key}`}
+                field={field}
+                value={data.tractor1[field.key]}
+                onChange={v => onChange(field.key, v, 'tractor1')}
+              />
+            ))}
           </div>
+        </section>
 
-          <div className="tiempos-block">
-            <p className="tiempos-label">Tiempo estimado por lote (horas)</p>
-            <div className="tiempos-grid">
-              {data.tiemposEstimados.map((t, i) => (
-                <div key={i} className="tiempo-item">
-                  <span className="tiempo-lote">L{i + 1}</span>
-                  <input
-                    className="tiempo-input"
-                    type="number"
-                    min={1}
-                    max={72}
-                    step={0.5}
-                    value={t}
-                    onChange={e => onTiempoChange(i, parseFloat(e.target.value) || 1)}
-                  />
-                  <span className="tiempo-unit">h</span>
-                </div>
-              ))}
-            </div>
+        {/* Nueva Sección: Predicción de Servicio - Tractor 2 */}
+        <section className={`data-section accent-orange`}>
+          <h3 className="section-title">
+            <span className="section-icon">🚜</span>
+            Sensores Tractor 2
+          </h3>
+          <div className="fields-list">
+            {/* Campo para el modelo del tractor */}
+            <FieldInput
+              field={{ key: 'model', label: 'Modelo', unit: '', type: 'text' }}
+              value={data.tractor2.model}
+              onChange={v => onChange('model', v, 'tractor2')}
+            />
+            {SENSOR_FIELDS.map(field => (
+              <FieldInput
+                key={`tractor2-${field.key}`}
+                field={field}
+                value={data.tractor2[field.key]}
+                onChange={v => onChange(field.key, v, 'tractor2')}
+              />
+            ))}
           </div>
         </section>
       </div>
@@ -112,7 +162,7 @@ function FieldInput({ field, value, onChange }) {
   const isFloat = field.step % 1 !== 0
 
   function handleChange(e) {
-    const raw = isFloat ? parseFloat(e.target.value) : parseInt(e.target.value, 10)
+    const raw = field.type === 'number' ? (isFloat ? parseFloat(e.target.value) : parseInt(e.target.value, 10)) : e.target.value;
     onChange(isNaN(raw) ? field.min : raw)
   }
 
@@ -144,7 +194,7 @@ function FieldInput({ field, value, onChange }) {
         </>
       ) : (
         <input
-          type="number"
+          type={field.type} // Usa el tipo de campo dinámicamente
           className="number-input"
           min={field.min}
           max={field.max}

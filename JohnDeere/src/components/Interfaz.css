@@ -31,6 +31,11 @@
   .cards-grid { grid-template-columns: 1fr; }
 }
 
+/* Estilo para la tarjeta de ancho completo */
+.full-width-card {
+  grid-column: 1 / -1; /* Hace que el elemento abarque todas las columnas */
+}
+
 /* ── Dashboard card ─────────────────────────────────── */
 .dash-card {
   background: #fff;
@@ -280,4 +285,39 @@
 .td-lote {
   font-weight: 700;
   color: #4a5568;
+}
+
+/* Estilos para la nueva tarjeta de predicción de servicio de tractores */
+.tractor-prediction-grid {
+  display: flex; /* Usamos flexbox para el layout horizontal */
+  justify-content: space-around; /* Distribuye el espacio entre los elementos */
+  align-items: flex-start; /* Alinea los elementos al inicio */
+  gap: 1rem; /* Espacio entre los elementos */
+  margin-top: 0.5rem;
+}
+
+.tractor-prediction-item {
+  flex: 1; /* Permite que cada elemento ocupe el mismo espacio disponible */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vertical-separator {
+  width: 1px; /* Ancho del separador */
+  background-color: #e2e8f0; /* Color del separador */
+  align-self: stretch; /* Estira el separador para que ocupe toda la altura */
+  margin: 0 0.5rem; /* Espacio a los lados del separador */
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 600px) {
+  .tractor-prediction-grid {
+    flex-direction: column; /* Apila los elementos verticalmente en pantallas pequeñas */
+  }
+  .vertical-separator {
+    width: 100%;
+    height: 1px; /* El separador se vuelve horizontal */
+    margin: 0.5rem 0;
+  }
 }
